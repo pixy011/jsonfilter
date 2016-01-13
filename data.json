@@ -1,0 +1,18 @@
+{
+  "level1": {
+    "level2": {
+      "key1": "key1 value"
+    }
+  },
+  "key2": "key2 value",
+  "specialchars": {
+    "name with space": "name with space",
+    "namewith'": "name with quote",
+    "namewith\"": "name with double quote",
+    "namewith.": "name with pediod",
+    "namewith.2": {
+      "key": "with period 2"
+    }
+  },
+  "string": "string value"
+}

@@ -1,7 +1,12 @@
 {
   "key1": "level1.level2.key1",
   "key2": "key2",
-  "space": "specialchars.'name with space'",
+  "space": "specialchars.name with space",
   "quote": "specialchars.namewith'",
-  "doublequote": "specialchars.namewith\""
+  "doublequote": "specialchars.namewith\"",
+  "withperiod": "specialchars.namewith\\.",
+  "withperiod2": "specialchars.namewith\\.2.key",
+  "deep": {
+    "deepkey": "string"
+  }
 }

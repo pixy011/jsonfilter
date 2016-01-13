@@ -2,8 +2,10 @@
 
 module JsonFilter
   class Filter
-    def initialize()
-
+    class << self
+      def create
+        Object.const_get("JsonFilter::#{Config.instance.filter_type.capitalize}Filter").new
+      end
     end
   end
 end
