@@ -1,0 +1,7 @@
+{
+  "key1": "level1.level2.key1",
+  "key2": "key2",
+  "space": "specialchars.'name with space'",
+  "quote": "specialchars.namewith'",
+  "doublequote": "specialchars.namewith\""
+}
