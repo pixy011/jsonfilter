@@ -17,26 +17,13 @@ module JsonFilter
       @filtered
     end
 
-  private
-    def _crawl(data, key_string)
-      keys = key_string.split(/(?<!\\)\./)
-      cursor = data
-      keys.each_with_index do |key, index|
-        if cursor.has_key?(key)
-          if index == keys.size - 1
-            return cursor[key]
-          else
-            cursor = cursor[key]
-          end
-        else
-          _error("Cannot crawl key string #{key_string}")
-          return nil
-        end
-      end
+    def has_errors?
+      @errors != ''
     end
 
-    def _error(message)
-      @errors += "#{message}\n"
+  private
+    def _error(message, level = 'error')
+      @errors += "\t[#{level.capitalize}] #{message}\n"
     end
 
     def _recurse(data, filter_level, product_level)
@@ -47,9 +34,10 @@ module JsonFilter
             product_level[key] = Hash.new
             _recurse(data, value, product_level[key])
           when 'String'
-            product_level[key] = _crawl(data, value)
+            product_level[key] = Crawler.do(data, value) { |args| _error(args[:error_message], 'warning') } ||
+                "<cannot find key #{value} in source data>"
           else
-            _error("Filter with key #{key} is invalid")
+            _error("Filter with key #{key} has an unknown format", 'warning')
         end
       end
     end

@@ -11,6 +11,7 @@ module JsonFilter
           :filter => '',
           :source => '',
           :out => './filtered.json',
+          :root => '',
 
           #Internal
           :filter_type => 'simple'
