@@ -6,9 +6,6 @@ module JsonFilter
       def do(data, key_string)
         keys = key_string.split(/(?<!\\)\./)
         cursor = data
-        if (data['key'] == 'VS-58')
-          test = 1
-        end
         keys.each do |key|
           index = nil
           if key =~ /.+\[\d+\]$/
