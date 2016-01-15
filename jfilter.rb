@@ -45,6 +45,10 @@ rescue OptionParser::InvalidOption => e
   puts 'Invalid option:'
   puts e.message
   exit 1
+rescue OptionParser::MissingArgument => e
+  puts 'An option is missing its argument:'
+  puts e.message
+  exit 1
 end
 
 puts 'JsonFilter'
