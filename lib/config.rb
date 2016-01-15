@@ -12,6 +12,7 @@ module JsonFilter
           :source => '',
           :out => './filtered.json',
           :root => '',
+          :iteration_id => nil,
 
           #Internal
           :filter_type => 'simple'

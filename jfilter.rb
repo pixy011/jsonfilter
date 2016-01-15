@@ -32,6 +32,9 @@ begin
       raise ArgumentError, 'Expecting option --root-is-array to be either \'on\' or \'off\'' unless ['on', 'off'].include?(toggle)
       JsonFilter::Config.instance.filter_type = 'loop_array'
     end
+    options.on('--iteration-id KEY', 'Specify a key to identify iteration in error messages') do |key|
+      JsonFilter::Config.instance.iteration_id = key
+    end
   end.parse!
 rescue ArgumentError => e
   puts 'Invalid argument:'
