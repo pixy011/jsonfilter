@@ -3,7 +3,21 @@
 module JsonFilter
   class Crawler
     class << self
-      def do(data, key_string)
+      def do(data, key_string, &block)
+        if key_string[0] == '\'' && key_string[-1] == '\''
+          key_string[1..-2]
+        else
+          optional = key_string[0] == '?'
+          key_string = key_string[1..-1] if optional
+          _key_string(data, key_string) do |args|
+            args[:optional] = optional
+            yield args
+          end
+        end
+      end
+
+    private
+      def _key_string(data, key_string)
         keys = key_string.split(/(?<!\\)\./)
         cursor = data
         keys.each do |key|
@@ -36,7 +50,6 @@ module JsonFilter
         cursor
       end
 
-    private
       def _id_iteration(data)
         if Config.instance.iteration_id
           error = false

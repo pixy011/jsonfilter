@@ -34,8 +34,15 @@ module JsonFilter
             product_level[key] = Hash.new
             _recurse(data, value, product_level[key])
           when 'String'
-            product_level[key] = Crawler.do(data, value) { |args| _error(args[:error_message], 'warning') } ||
-                "<cannot find key #{value} in source data>"
+            delete = false
+            product_level[key] = Crawler.do(data, value) do |args|
+              if args[:optional]
+                delete = true
+              else
+                _error(args[:error_message], 'warning')
+              end
+            end || "<cannot find key #{value} in source data>"
+            product_level.delete(key) if delete
           else
             _error("Filter with key #{key} has an unknown format", 'warning')
         end
