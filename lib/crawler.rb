@@ -11,20 +11,38 @@ module JsonFilter
           key_string = key_string[1..-1] if optional
           _key_string(data, key_string) do |args|
             args[:optional] = optional
-            yield args
+            yield args if block_given?
           end
         end
       end
 
     private
+      def _construct_array(data, descriptor)
+        array = Array.new
+
+        if descriptor[0] == '\''
+        else
+          data.each do |item|
+            array << self.do(item, descriptor) || "Error crawling #{descriptor}"
+          end
+        end
+
+        array
+      end
+
       def _key_string(data, key_string)
         keys = key_string.split(/(?<!\\)\./)
         cursor = data
         keys.each do |key|
           index = nil
+          construct_array_descriptor = nil
           if key =~ /.+\[\d+\]$/
             index = /\[(\d+)\]$/.match(key)[1].to_i
             key = /(.+)\[\d+\]$/.match(key)[1]
+          end
+          if key =~ /.+\{.+\}$/
+            construct_array_descriptor = /.+\{(.+)\}$/.match(key)[1]
+            key = /(.+)\{.+\}$/.match(key)[1]
           end
           if cursor == nil
             yield({:error_message => "Key '#{key}' in key string '#{key_string}' does not exist. Parent must be empty.#{_id_iteration(data)}"})
@@ -45,6 +63,8 @@ module JsonFilter
             end
             cursor = cursor[index]
           end
+
+          return _construct_array(cursor, construct_array_descriptor) unless construct_array_descriptor == nil
         end
 
         cursor

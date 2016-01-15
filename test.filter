@@ -1,5 +1,6 @@
 {
   "key": "key",
   "project_name": "?fields.project.na3me",
-  "machin": "'patate'"
+  "machin": "'patate'",
+  "array": "fields.customfield_10013{value}"
 }
