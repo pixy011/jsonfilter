@@ -12,7 +12,10 @@ module JsonFilter
             index = /\[(\d+)\]$/.match(key)[1].to_i
             key = /(.+)\[\d+\]$/.match(key)[1]
           end
-          if cursor.has_key?(key)
+          if cursor.class.name != 'Hash'
+            yield({:error_message => "Non-object while crawling key #{key_string}"})
+            return nil
+          elsif cursor.has_key?(key)
             cursor = cursor[key]
           else
             yield({:error_message => "Cannot crawl key string #{key_string}"})
