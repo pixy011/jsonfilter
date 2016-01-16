@@ -4,7 +4,7 @@ module JsonFilter
   class Crawler
     class << self
       def do(data, key_string, &block)
-        if key_string[0] == '\'' && key_string[-1] == '\''
+        if key_string[0] == '|' && key_string[-1] == '|'
           key_string[1..-2]
         else
           optional = key_string[0] == '?'
@@ -21,9 +21,13 @@ module JsonFilter
         array = Array.new
 
         if descriptor[0] == '\''
+          filter = SimpleFilter.new("{#{descriptor.gsub('\'', '"')}}")
+          data.each do |item|
+            array << filter.do(item)
+          end
         else
           data.each do |item|
-            array << self.do(item, descriptor) || "Error crawling #{descriptor}"
+              array << self.do(item, descriptor) || "Error crawling '#{descriptor}' when constructing array"
           end
         end
 

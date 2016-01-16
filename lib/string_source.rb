@@ -10,11 +10,11 @@ module JsonFilter
     end
 
     def to_json(arg = nil)
-      (json = JSON.parse(@resource)) rescue raise RuntimeError "Expected JSON formatted string"
+      (json = JSON.parse(@resource)) rescue raise RuntimeError, "Expected JSON formatted string"
       if @root == ''
         json
       else
-        Crawler.do(json, @root) { raise RuntimeError "Invalid root #{@root}"}
+        Crawler.do(json, @root) { raise RuntimeError, "Invalid root #{@root}"}
       end
     end
   end

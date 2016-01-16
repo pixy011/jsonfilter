@@ -4,16 +4,17 @@ module JsonFilter
   class SimpleFilter
     attr_accessor :errors
 
-    def initialize
-      @filter_source = Source.create(Config.instance.filter)
+    def initialize(filter = Config.instance.filter)
+      @filter_source = Source.create(filter)
       @filter = @filter_source.to_json
     end
 
     def do(data)
-      raise TypeError, "Expecting JsonFilter::*Source" unless data.class.name =~ /^JsonFilter::\w+Source$/
+      #raise TypeError, "Expecting JsonFilter::*Source" unless data.class.name =~ /^JsonFilter::\w+Source$/
+      data = data.to_json if data.class.name != 'Hash'
       @filtered = Hash.new
       @errors = ''
-      _recurse(data.to_json, @filter, @filtered)
+      _recurse(data, @filter, @filtered)
       @filtered
     end
 
