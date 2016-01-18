@@ -3,5 +3,6 @@
   "project_name": "?fields.project.na3me",
   "machin": "|patate|",
   "array": "fields.customfield_10013{value}",
-  "arrob": "fields.customfield_10013{'val': 'value', 'identifier': 'id', 'test': '|patate|'}"
+  "arrob": "fields.customfield_10013{'val': 'value', 'identifier': 'id', 'test': '|patate|'}",
+  "avatars": "fields.customfield_10013{'48': 'avatarUrls.48x48', '32': 'avatarsUrls.32x32', 'test': '|test|'}"
 }

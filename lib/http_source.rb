@@ -12,7 +12,7 @@ module JsonFilter
     end
 
     def to_json
-      (json = JSON.parse(Net::HTTP.get(@uri))) rescue raise RuntimeError, "Expected JSON formatted HTTP resource"
+      (json = JSON.parse(Net::HTTP.get(@uri))) rescue raise RuntimeError, 'Expected JSON formatted HTTP resource'
       if @root == ''
         json
       else

@@ -35,7 +35,7 @@ module JsonFilter
       end
 
       def _key_string(data, key_string)
-        keys = key_string.split(/(?<!\\)\./)
+        keys = _tokenize(key_string)
         cursor = data
         keys.each do |key|
           index = nil
@@ -68,7 +68,12 @@ module JsonFilter
             cursor = cursor[index]
           end
 
-          return _construct_array(cursor, construct_array_descriptor) unless construct_array_descriptor == nil
+          begin
+            return _construct_array(cursor, construct_array_descriptor) unless construct_array_descriptor == nil
+          rescue RuntimeError => e
+            e.message << " at key '#{key}' of '#{key_string}'"
+            raise e
+          end
         end
 
         cursor
@@ -85,6 +90,31 @@ module JsonFilter
         end
 
         ''
+      end
+
+      def _tokenize(key_string)
+        state = {
+            :action => 'search-dot',
+            :start => 0,
+            :depth => 0,
+            :tokens => Array.new
+        }
+         for i in 0..key_string.size
+           if key_string[i] == '{'
+             state[:action] = 'skipping'
+             state[:depth] += 1
+           end
+           state[:depth] -= 1 if state[:action] == 'skipping' && key_string[i] == '}'
+           state[:action] = 'search-dot' if state[:depth] == 0
+
+           if state[:action] == 'search-dot' && key_string[i] == '.'
+             state[:tokens] << key_string[state[:start]..i - 1]
+             state[:start] = i + 1
+           end
+         end
+        state[:tokens] << key_string[state[:start]..-1]
+
+        state[:tokens]
       end
     end
   end

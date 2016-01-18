@@ -10,7 +10,7 @@ module JsonFilter
     end
 
     def to_json(arg = nil)
-      (json = JSON.parse(@resource)) rescue raise RuntimeError, "Expected JSON formatted string"
+      (json = JSON.parse(@resource)) rescue raise RuntimeError, 'Expected JSON formatted string'
       if @root == ''
         json
       else
