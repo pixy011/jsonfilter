@@ -4,5 +4,21 @@
   "machin": "|patate|",
   "array": "fields.customfield_10013{value}",
   "arrob": "fields.customfield_10013{'val': 'value', 'identifier': 'id', 'test': '|patate|'}",
-  "avatars": "fields.customfield_10013{'48': 'avatarUrls.48x48', '32': 'avatarsUrls.32x32', 'test': '|test|'}"
+  "avatars": "fields.customfield_10013{'48': 'avatarUrls.48x48', '32': 'avatarUrls.32x32', 'test': '|test|'}",
+  "fixed": [
+    "fields.customfield_10013[0].value",
+    {"test": "|machin|",
+      "name": "fields.project.name",
+      "nf": "?tralala"},
+    "?popo",
+    "|patate|"
+  ],
+  "test_results": [
+    {
+      "name": "|something|",
+      "results": ""
+    },
+    {},
+    {}
+  ]
 }

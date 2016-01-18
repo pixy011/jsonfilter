@@ -35,6 +35,10 @@ begin
     options.on('--iteration-id KEY', 'Specify a key to identify iteration in error messages') do |key|
       JsonFilter::Config.instance.iteration_id = key
     end
+    options.on('--pretty-print TOGGLE', 'Indicate if the output should be pretty printed') do |toggle|
+      raise ArgumentError, 'Expecting option --root-is-array to be either \'on\' or \'off\'' unless ['on', 'off'].include?(toggle)
+      JsonFilter::Config.instance.pretty = toggle == 'on'
+    end
   end.parse!
 rescue ArgumentError => e
   puts 'Invalid argument:'
@@ -67,7 +71,7 @@ puts 'Filtering...'
 begin
   filter = JsonFilter::Filter.create
   filtered = filter.do(JsonFilter::Source.create(JsonFilter::Config.instance.source, JsonFilter::Config.instance.root))
-  File.open(JsonFilter::Config.instance.out, 'w') { |file| file.write(filtered.to_json) }
+  File.open(JsonFilter::Config.instance.out, 'w') { |file| file.write(JsonFilter::Config.instance.pretty ? JSON.pretty_generate(filtered) : filtered.to_json) }
 rescue RuntimeError => e
   puts 'Failed with error:'
   puts e.message

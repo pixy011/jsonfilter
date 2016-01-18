@@ -13,6 +13,7 @@ module JsonFilter
           :out => './filtered.json',
           :root => '',
           :iteration_id => nil,
+          :pretty => false,
 
           #Internal
           :filter_type => 'simple'

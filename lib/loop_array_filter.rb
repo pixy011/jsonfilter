@@ -12,7 +12,7 @@ module JsonFilter
       raise RuntimeError, 'Expected the root to be an array' unless array.class.name == 'Array'
       array.each do |item|
         filtered_item = Hash.new
-        _recurse(item, @filter, filtered_item)
+        _recurse_object(item, @filter, filtered_item)
         @filtered << filtered_item
       end
 
