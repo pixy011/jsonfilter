@@ -14,6 +14,8 @@ module JsonFilter
           :root => '',
           :iteration_id => nil,
           :pretty => false,
+          :http_basic_user => nil,
+          :http_basic_pass => nil,
 
           #Internal
           :filter_type => 'simple'

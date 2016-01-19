@@ -5,7 +5,9 @@ module JsonFilter
     class << self
       def do(data, key_string, &block)
         if key_string[0] == '|' && key_string[-1] == '|'
-          key_string[1..-2]
+          _interpolate_string(data, key_string[1..-2])
+        elsif key_string == ''
+          ''
         else
           optional = key_string[0] == '?'
           key_string = key_string[1..-1] if optional
@@ -32,6 +34,15 @@ module JsonFilter
         end
 
         array
+      end
+
+      def _interpolate_string(data, string)
+        while string =~ /\{=.+\}/
+          key_string = /\{=(.+)\}/.match(string)[1]
+          string.sub!(/\{=#{key_string}\}/, self.do(data, key_string))
+        end
+
+        string
       end
 
       def _key_string(data, key_string)

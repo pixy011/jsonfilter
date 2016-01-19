@@ -14,7 +14,7 @@ module JsonFilter
       if @root == ''
         json
       else
-        Crawler.do(json, @root) { raise RuntimeError, "Invalid root #{@root}"}
+        Crawler.do(json, @root) { raise RuntimeError, "Invalid root '#{@root}'"}
       end
     end
   end
