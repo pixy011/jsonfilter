@@ -8,8 +8,8 @@ module JsonFilter
       raise TypeError, "Expecting JsonFilter::*Source" unless data.class.name =~ /^JsonFilter::\w+Source$/
       @filtered = Array.new
       @errors = ''
-      array = data.to_json
-      raise RuntimeError, 'Expected the root to be an array' unless array.class.name == 'Array'
+      array = data.parse('source, loop array')
+      raise RuntimeError, "Root expected to be of 'Array' type but '#{array.class.name}' found" unless array.class.name == 'Array'
       array.each do |item|
         filtered_item = Hash.new
         _recurse_object(item, @filter, filtered_item)

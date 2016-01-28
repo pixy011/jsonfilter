@@ -6,12 +6,12 @@ module JsonFilter
 
     def initialize(filter = Config.instance.filter)
       @filter_source = Source.create(filter)
-      @filter = @filter_source.to_json
+      @filter = @filter_source.parse('filter')
     end
 
     def do(data)
       #raise TypeError, "Expecting JsonFilter::*Source" unless data.class.name =~ /^JsonFilter::\w+Source$/
-      data = data.to_json if data.class.name != 'Hash'
+      data = data.parse('source') if data.class.name != 'Hash'
       @filtered = Hash.new
       @errors = ''
       if @filter.class.name == 'Hash'
@@ -47,7 +47,7 @@ module JsonFilter
           when 'String'
             delete = false
             has_error = false
-            product_level[key] = Crawler.do(data, value) do |args|
+            product_level[key] = Parser.do(data, value) do |args|
               if args[:optional]
                 delete = true
               else
@@ -77,7 +77,7 @@ module JsonFilter
           when 'String'
 
             has_error = false
-            newValue = Crawler.do(data, value) do |args|
+            newValue = Parser.do(data, value) do |args|
               if args[:optional]
                 delete = true
               else

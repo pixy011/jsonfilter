@@ -1,20 +1,20 @@
 {
-  "key": "key",
-  "test": "|test{=key}test|",
-  "project_name": "?fields.project.na3me",
-  "machin": "|patate|",
-  "array": "fields.customfield_10013{value}",
-  "arrob": "fields.customfield_10013{'val': 'value', 'identifier': 'id', 'test': '|patate|'}",
-  "avatars": "fields.customfield_10013{'48': 'avatarUrls.48x48', '32': 'avatarUrls.32x32', 'test': '|test|'}",
+  "key": "=key",
+  "test": "test{=fields.issuetype.description}test",
+  "project_name": "=?fields.project.na3me",
+  "machin": "patate",
+  "array": "=fields.customfield_10013{value}",
+  "arrob": "=fields.customfield_10013{'val': '=value', '=identifier': 'id', 'test': 'patate'}",
+  "avatars": "=fields.customfield_10013{'48': '=avatarUrls.48x48', '32': '=avatarUrls.32x32', 'test': 'test'}",
   "fixed": [
-    "fields.customfield_10013[0].value",
+    "=fields.customfield_10013[0].value",
     {
-      "test": "|machin|",
-      "name": "fields.project.name",
-      "nf": "?tralala"
+      "test": "machin",
+      "name": "=fields.project.name",
+      "nf": "=?tralala"
     },
-    "?popo",
-    "|patate|",
+    "=?popo",
+    "patate",
     ""
   ]
 }

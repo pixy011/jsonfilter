@@ -1,20 +1,18 @@
 # JsonFilter
 
 module JsonFilter
-  class Crawler
+  class Parser
     class << self
       def do(data, key_string, &block)
-        if key_string[0] == '|' && key_string[-1] == '|'
-          _interpolate_string(data, key_string[1..-2])
-        elsif key_string == ''
-          ''
-        else
-          optional = key_string[0] == '?'
-          key_string = key_string[1..-1] if optional
+        if key_string[0] == '='
+          optional = key_string[1] == '?'
+          key_string = key_string[(optional ? 2 : 1)..-1]
           _key_string(data, key_string) do |args|
             args[:optional] = optional
             yield args if block_given?
           end
+        else
+          _interpolate_string(data, key_string)
         end
       end
 
@@ -29,7 +27,7 @@ module JsonFilter
           end
         else
           data.each do |item|
-              array << self.do(item, descriptor) || "Error crawling '#{descriptor}' when constructing array"
+              array << self.do(item, descriptor) || "Error parsing '#{descriptor}' when constructing array"
           end
         end
 
@@ -63,12 +61,12 @@ module JsonFilter
             yield({:error_message => "Key '#{key}' in key string '#{key_string}' does not exist. Parent must be empty.#{_id_iteration(data)}"})
             return nil
           elsif cursor.class.name != 'Hash'
-            yield({:error_message => "Non-object while crawling key '#{key_string}' at '#{key}'#{_id_iteration(data)}"})
+            yield({:error_message => "Non-object while parsing key '#{key_string}' at '#{key}'#{_id_iteration(data)}"})
             return nil
           elsif cursor.has_key?(key)
             cursor = cursor[key]
           else
-            yield({:error_message => "Cannot crawl key string '#{key_string}' at '#{key}'#{_id_iteration(data)}"})
+            yield({:error_message => "Cannot parsing key string '#{key_string}' at '#{key}'#{_id_iteration(data)}"})
             return nil
           end
           if index != nil && cursor.class.name == 'Array'
@@ -97,7 +95,7 @@ module JsonFilter
             error = true
           end
 
-          return error ? "[Error while crawling #{Config.instance.iteration_id}]" : "[#{iteration_id}]"
+          return error ? "[Error while parsing #{Config.instance.iteration_id}]" : "[#{iteration_id}]"
         end
 
         ''

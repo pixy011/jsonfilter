@@ -1,7 +1,7 @@
 # JsonFilter
 
 require_relative 'lib/config'
-require_relative 'lib/crawler'
+require_relative 'lib/parser'
 require_relative 'lib/filter'
 require_relative 'lib/source'
 require 'optparse'
@@ -29,7 +29,7 @@ begin
       JsonFilter::Config.instance.out = output
     end
     options.on('-r', '--root ROOT', 'Narrow down the filtering to a node; all keys in the filter will be relative to this root') do |root|
-      JsonFilter::Config.instance.root = root
+      JsonFilter::Config.instance.root = "=#{root}"
     end
     options.on('--root-is-array [TOGGLE]', '[on/off*] Indicate the root of SOURCE is an array and to apply the filter to each of its member') do |toggle|
       raise ArgumentError, 'Expecting option --root-is-array to be either \'on\' or \'off\'' unless ['on', 'off'].include?((toggle ||= 'on'))

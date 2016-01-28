@@ -11,13 +11,13 @@ module JsonFilter
       @root = root
     end
 
-    def to_json
+    def parse(tag = '<unknown>')
 
-      (json = JSON.parse(_read_http)) rescue raise RuntimeError, 'Expected JSON formatted HTTP resource'
+      (json = JSON.parse(_read_http)) rescue raise RuntimeError, "Expected JSON formatted HTTP resource at '#{tag}' for http source"
       if @root == ''
         json
       else
-        Crawler.do(json, @root) { raise RuntimeError, "Invalid root '#{@root}'"}
+        Parser.do(json, @root) { raise RuntimeError, "Invalid root '#{@root}'"}
       end
     end
 
