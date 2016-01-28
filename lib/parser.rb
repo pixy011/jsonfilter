@@ -37,7 +37,7 @@ module JsonFilter
       def _interpolate_string(data, string)
         while string =~ /\{=.+\}/
           key_string = /\{=(.+)\}/.match(string)[1]
-          string.sub!(/\{=#{key_string}\}/, self.do(data, key_string))
+          string.sub!(/\{=#{key_string}\}/, self.do(data, "=#{key_string}"))
         end
 
         string
